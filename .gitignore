@@ -1,4 +1,5 @@
 
 *.pdf
+*.png
 final_params.txt
 init_guess_params.txt

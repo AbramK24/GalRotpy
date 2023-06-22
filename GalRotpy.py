@@ -1109,7 +1109,7 @@ for yi in range(ndim):
         ax = axes[yi, xi]
         ax.tick_params(axis='both', which='major', labelsize=14.5, pad=3, direction = "in")
         
-conf_Regions_file = out_folder+"/Conf_Regions.pdf"
+conf_Regions_file = out_folder+"/Conf_Regions.png"
 fig.savefig(conf_Regions_file,bbox_inches='tight',pad_inches=0.15)
 
 #Here we obtain the quantities of interest, which will be include in a table as output
@@ -1301,7 +1301,7 @@ plt.xlim(0., 1.02*np.amax(r_data))
 plt.ylim(0., 1.1*np.amax(v_c_data))
 plt.tight_layout()
 plt.legend(loc="lower right",fontsize=15)
-galRotpy_fit_file = out_folder+"/GalRotpy_fit.pdf"
+galRotpy_fit_file = out_folder+"/GalRotpy_fit.png"
 plt.savefig(galRotpy_fit_file)
 
 print ("\n#####################################################################\n")
