@@ -43,13 +43,14 @@ from scipy.optimize import fsolve, minimize, curve_fit
 from multiprocessing import Pool
 import sys
 import os
+import warnings
 
 
 ALLOWED_OPTIONS = [{'bulge', 'halo'}, {'disk', 'halo'}, {'bulge', 'disk', 'halo'}]
 ALLOWED_POTENTIALS = ["bulge", "disk", "thickDisk", "expDisk", "halo", "burkert"]
 
 
-np.warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore')
 
 
 
@@ -303,7 +304,7 @@ lista=np.linspace(0.001, 1.02*np.max(r_data), 10*len(r_data)) # radial coordinat
 MN_Bulge_p= MiyamotoNagaiPotential(amp=amp1*units.Msun,a=a1*units.kpc,b=b1*units.kpc,normalize=False,ro=r_0, vo=v_0)
 MN_Thin_Disk_p= MiyamotoNagaiPotential(amp=amp2*units.Msun,a=a2*units.kpc,b=b2*units.kpc,normalize=False,ro=r_0, vo=v_0)
 MN_Thick_Disk_p= MiyamotoNagaiPotential(amp=amp3*units.Msun,a=a3*units.kpc,b=b3*units.kpc,normalize=False,ro=r_0, vo=v_0)
-EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, maxiter=20, tol=0.001, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
+EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
 NFW_p = NFWPotential(amp=amp5*units.Msun, a=a5*units.kpc, normalize=False, ro=r_0, vo=v_0)
 BK_p = BurkertPotential(amp=amp6*units.Msun/(units.kpc)**3, a=a6*units.kpc, normalize=False, ro=r_0, vo=v_0)
 
@@ -554,13 +555,13 @@ def MN_ed_amp_s_func(val):
     if EX_d_plot.get_visible() == True:
         global EX_Disk_p, amp4,h_r
         amp4=val*1
-        EX_Disk_p = RazorThinExponentialDiskPotential(amp=val*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, maxiter=20, tol=0.001, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
+        EX_Disk_p = RazorThinExponentialDiskPotential(amp=val*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
         update_rot_curve() 
 def MN_ed_a_s_func(val):
     if EX_d_plot.get_visible() == True:
         global EX_Disk_p, amp4,h_r
         h_r=val*1
-        EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=val*units.kpc, maxiter=20, tol=0.001, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
+        EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=val*units.kpc, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
         update_rot_curve()
         
 # NFW Halo       
@@ -804,7 +805,7 @@ def model(parameters, R):
         
     if chk[3]==True:
         amp4=para["amp4"]; h_r=para["h_r"]
-        EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, maxiter=20, tol=0.001, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
+        EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
         check_pot.append(EX_Disk_p)
         
     if chk[4]==True:
@@ -1241,7 +1242,7 @@ for i in range(ndim):
 r=np.linspace(0.001, 1.02*np.amax(r_data),10000)
 curva = model(fit_para, r)
 nchi2 = np.sum(((model(fit_para, r_data) - v_c_data)/v_c_err_data)**2)/(N_data - ndim)
-np.warnings.filterwarnings('ignore')
+warnings.filterwarnings('ignore')
 plt.figure(figsize=(6, 6))
 
 
@@ -1274,7 +1275,7 @@ if chk[2]==True:
         
 if chk[3]==True:
     amp4=best_para["amp4"]; h_r=best_para["h_r"]
-    EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, maxiter=20, tol=0.001, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
+    EX_Disk_p = RazorThinExponentialDiskPotential(amp=amp4*(units.Msun/(units.pc**2)), hr=h_r*units.kpc, normalize=False, ro=r_0, vo=v_0, new=True, glorder=100)
     vc_exp=calcRotcurve(EX_Disk_p, r, phi=None)*220
     plt.plot(r, vc_exp, "--", color = "cyan", label = r"Exp. Disk")
         
@@ -1369,4 +1370,3 @@ print (table_p)
 print ("\n#####################################################################")
 print ("\nDone")
 print ("\n#####################################################################\n")
-
